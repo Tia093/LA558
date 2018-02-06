@@ -1,0 +1,68 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by Tia093 (http://jsbin.com/xihuni/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Text Box Selector</title>
+
+  <link rel="stylesheet"<style  href="layout.css" />
+  
+  <script>
+  //load values into array
+ var zodiacList=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+console.log(zodiac.length) ; //will print 12
+  function zodiacDisplay() {
+	  x = document.getElementById("zodiacNum").value;
+	  //remember Adair is item 0 in the array so x-1 is necessary.
+	  console.log("wrong: "+zodiacList[x]+",  correct: "+zodiacList[x-1]);
+	  document.getElementById("zodiacName").innerHTML = zodiacList[x-1];
+  } 
+  </script> 
+<style id="jsbin-css">
+<style id="jsbin-css">
+body {
+	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	font-size: 80.5%;
+}
+
+#slider-range-max{
+	width: 500px
+}
+
+#countyName{
+	font-style:italic;
+	font-weight:bold;
+	font-size: 16px
+}
+</style>
+</style>
+</head>
+<body>
+ 
+<p>
+  <label for="amount">Enter Zodiac Alphabetic Number:</label>
+  <input type="text" id="zodiacNum" style="border: 1; font-weight: bold;" onChange="zodiacDisplay()" value="-" size="4"/>
+</p>
+<div id="slider-range-max"></div>
+<br><br>
+<div id="zodiacName">-</div>
+<script id="jsbin-javascript">
+//load values into array
+ var zodiacList=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+console.log(zodiac.length) ; //will print 12
+  
+  function zodiacDisplay() {
+	  x = document.getElementById("zodiacNum").value;
+	  console.log("wrong: "+zodiacList[x]+",  correct: "+zodiacList[x-1]);
+	  document.getElementById("zodiacName").innerHTML = zodiacList[x-1];
+  } 
+</script>
+</body>
+</html>
