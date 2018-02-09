@@ -16,13 +16,13 @@ Released under the MIT license: http://jsbin.mit-license.org
   
   <script>
   //load values into array
- var zodiacList=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+ var zodiacList01=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 console.log(zodiac.length) ; //will print 12
   function zodiacDisplay() {
 	  x = document.getElementById("zodiacNum").value;
 	  //remember Adair is item 0 in the array so x-1 is necessary.
-	  console.log("wrong: "+zodiacList[x]+",  correct: "+zodiacList[x-1]);
-	  document.getElementById("zodiacName").innerHTML = zodiacList[x-1];
+	  console.log("wrong: "+zodiacList01[x]+",  correct: "+zodiacList01[x-1]);
+	  document.getElementById("zodiacName").innerHTML = zodiacList01[x-1];
   } 
   </script> 
 <style id="jsbin-css">
@@ -53,13 +53,13 @@ body {
 <div id="zodiacName">-</div>
 <script id="jsbin-javascript">
 //load values into array
- var zodiacList=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+ var zodiacList01=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 console.log(zodiac.length) ; //will print 12
   
   function zodiacDisplay() {
 	  x = document.getElementById("zodiacNum").value;
-	  console.log("wrong: "+zodiacList[x]+",  correct: "+zodiacList[x-1]);
-	  document.getElementById("zodiacName").innerHTML = zodiacList[x-1];
+	  console.log("wrong: "+zodiacList01[x]+",  correct: "+zodiacList01[x-1]);
+	  document.getElementById("zodiacName").innerHTML = zodiacList01[x-1];
   } 
 </script>
 </body>
