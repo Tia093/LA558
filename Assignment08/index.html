@@ -1,0 +1,92 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by Tia093 (http://jsbin.com/wixagas/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by anonymous (http://jsbin.com/honozepafi/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+	
+	<title>Leaflet Map</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>	
+
+  </head>
+<body>
+
+
+
+<div id="mapid" style="width: 800px; height: 450px;"></div>
+<script>
+
+	var mymap = L.map('mapid').setView([42.055080, -93.623746,], 13);
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+
+	L.marker([42.055080, -93.623746]).addTo(mymap)
+		.bindPopup("<b>This is my apt</b><br />").openPopup();
+  
+    L.marker([42.029525, -93.652636]).addTo(mymap)
+		.bindPopup("<b>This is Civil, Construction and Environmental Department Building</b><br />").openPopup();
+   L.marker([41.998665, -93.634814]).addTo(mymap)
+		.bindPopup("<b>This is my office</b><br />").openPopup();
+   
+	L.circle([42.069114, -93.629441], 800, {
+		color: 'red',
+		fillOpacity: 0.5
+	}).addTo(mymap).bindPopup("This is Ada Hayden Park.");
+
+	L.polygon([
+		[42.051120, -93.620801],
+		[42.051101, -93.624527],
+		[42.045795, -93.623532],
+        [42.045814, -93.620750]
+
+    ]).addTo(mymap).bindPopup("This is North Grand Mall");
+  L.circleMarker([42.035618,-93.644917], {
+    radius:300 } ).addTo(mymap).bindPopup("This is Ames");
+  L.circleMarker([42.026369,-93.646537], {
+    radius:60 } ).addTo(mymap).bindPopup("This is main campus of Iowa State University");
+  L.circleMarker([42.056581,-93.879303], {
+    radius:180 } ).addTo(mymap).bindPopup("This is City of Boone");
+
+	var popup = L.popup();
+
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent("You clicked the map at " + e.latlng.toString())
+			.openOn(mymap);
+	}
+
+	mymap.on('click', onMapClick);
+
+</script>
+
+
+
+</body>
+</html>
+
