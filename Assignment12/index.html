@@ -1,0 +1,171 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by Tia093 (http://jsbin.com/xocohug/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+	<title>Assignment 12</title>
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 600px;
+			height: 400px;
+		}
+	</style>
+</head>
+<body>
+<div id='map'></div>
+<script id="jsbin-javascript">
+var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'; 
+console.clear()
+  //JSON
+	var capitalcities = L.layerGroup(
+  [{
+    "name":"Springfield",
+    "lat":"39",
+    "long":"-89",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Illinois state"
+  },
+    {
+    "name":"Indianapolis",
+    "lat":"39",
+    "long":"-89",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Indiana state"
+  },
+    {
+    "name":"Des Moines",
+    "lat":"41",
+    "long":"-93",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Iowa state"
+  },
+    {
+    "name":"Topeka",
+    "lat":"39",
+    "long":"-95",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Kansas state"
+  },
+    {
+    "name":"Lansing",
+    "lat":"43",
+    "long":"-89",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Michigan state"
+  },
+    {
+    "name":"St.Paul",
+    "lat":"44",
+    "long":"-93",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Minnesota state"
+  },
+     {
+    "name":"Jefferson City",
+    "lat":"38",
+    "long":"-92",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Missouri state"
+  },
+     {
+    "name":"Lincoln",
+    "lat":"40",
+    "long":"-96",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Nebraska state"
+  },
+     {
+    "name":"Bismarck",
+    "lat":"46",
+    "long":"-100",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of North Dakota state"
+  },
+     {
+    "name":"Columbus",
+    "lat":"39",
+    "long":"-82",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Ohio state"
+  },
+    {
+    "name":"Pierre",
+    "lat":"44",
+    "long":"-100",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of South Dakota state"
+  },
+    {
+    "name":"Madison",
+    "lat":"43",
+    "long":"-89",
+    "iconColor":"ff0000",
+    "popupText":"This is the capital city of Wisconsin state"}]);
+  
+  //GeoJSON
+   var myGeoJSON01=L.layerGroup({"type":"FeatureCollection","features":[{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"small","marker-symbol":"star","city name":"Chicago"},"geometry":{"type":"Point","coordinates":[-87.62695312499999,41.96765920367816]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"small","marker-symbol":"star","city name":"New York City"},"geometry":{"type":"Point","coordinates":[-73.95996093749999,40.81380923056958]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"small","marker-symbol":"star","city name":"Washington D.C."},"geometry":{"type":"Point","coordinates":[-77.0361328125,38.95940879245423]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"small","marker-symbol":"star","city name":"St.Louis"},"geometry":{"type":"Point","coordinates":[-90.19775390625,38.65119833229951]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"small","marker-symbol":"star","city name":"Kansas City"},"geometry":{"type":"Point","coordinates":[-94.559326171875,39.104488809440475]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"small","marker-symbol":"star","city name":"Minneapolis"},"geometry":{"type":"Point","coordinates":[-93.1640625,45.02695045318546]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"small","marker-symbol":"star","city name":"Seattle"},"geometry":{"type":"Point","coordinates":[-122.29980468749999,47.66538735632654]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"small","marker-symbol":"star","city name":"San Francisco"},"geometry":{"type":"Point","coordinates":[-122.3876953125,37.85750715625203]}}]});
+  var myGeoJSON02=L.layerGroup({"type":"FeatureCollection","features":[{"type":"Feature","properties":{"stroke":"#ff80c0","stroke-width":2,"stroke-opacity":1,"fill":"#ff80c0","fill-opacity":0.5},"geometry":{"type":"Polygon","coordinates":[[[-91.23046875,43.50075243569041],[-96.52587890625,43.5326204268101],[-96.43798828125,42.48830197960227],[-95.7568359375,40.56389453066509],[-91.38427734374999,40.613952441166596],[-90.17578124999999,42.01665183556825],[-91.23046875,43.50075243569041]]]}},{"type":"Feature","properties":{"stroke":"#555555","stroke-width":4,"stroke-opacity":1},"geometry":{"type":"LineString","coordinates":[[-93.570556640625,42.01052981889534],[-93.58154296875,41.65034063112266],[-93.2025146484375,41.705728515237524],[-92.845458984375,41.69752591075902],[-91.5216064453125,41.68522004222073],[-90.3900146484375,41.599013054830216],[-90.3350830078125,41.53736603550382],[-90.08239746093749,41.69752591075902],[-89.8077392578125,41.759019938155404],[-89.461669921875,41.828642001860544],[-89.0167236328125,41.90636538970964],[-88.6376953125,41.90636538970964],[-88.4014892578125,41.79998325207397],[-88.0389404296875,41.812267143599804],[-87.901611328125,41.881831370505594],[-87.6214599609375,41.87365126992505]]}}]});
+
+ // Base Layers
+var streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr}),
+    grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+     satellite= L.tileLayer(mbUrl,{id:'mapbox.streets-satellite',attribution:mbAttr});
+
+  var map = L.map('map', {
+		center: [42.02, -93.63],
+		zoom: 4,
+		layers: [grayscale]
+	});
+	var baseLayers = {
+		"Grayscale": grayscale,
+		"Streets": streets,
+    "Satellite":satellite,
+	};
+
+var overlayMaps = {
+	"Capital cities": capitalcities,
+  "Travelled cities":myGeoJSON01,
+  "Iowa State":myGeoJSON02
+   };
+L.control.layers(baseLayers,overlayMaps).addTo(map);
+
+	//adding JSON to map
+var iconMarkerURL="http://www.googlemapsmarkers.com/v1/";
+  for(var i=0; i<capitalcities.length;i++) {
+    console.log(capitalcities[i].name)
+    
+   var marker=L.marker([capitalcities[i].lat,capitalcities[i].long],         {icon:L.icon({
+       iconUrl:iconMarkerURL+capitalcities[i].iconColor,
+       iconSize:[10,17],
+       iconAnchor:[5,17],
+       popupAnchor:[0,-20]
+     }),
+       title:capitalcities[i].name                               }).bindPopup("<b>"+capitalcities[i].name+"</b><br>"+capitalcities[i].popupText+".").addTo(overlayMaps);
+  };
+var markerStyle={
+  "color":"#ff7800",
+  "weight":4,
+  "opacity":1,
+};
+
+  
+
+</script>
+</body>
+</html>
