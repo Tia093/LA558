@@ -1,0 +1,203 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by Tia093 (http://jsbin.com/xejufih/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+  <head>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	  
+	<script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>  
+  <style id="jsbin-css">
+html, body, 
+
+#map { height: 500px; margin: 5; padding: 0; }
+
+
+.legend {
+    line-height: 8px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+</style>
+</head>
+  <body>
+<div id="map"></div>
+  <script id="jsbin-javascript">
+console.clear();
+
+var map = L.map('map').setView([42, -94], 7);
+
+// add an OpenStreetMap tile layer
+var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 18
+}).addTo(map);
+
+var myPoints = [
+  ["22", 45, -93, "Winter"],
+  ["20", 30, -92, "Spring"],
+  ["15", 35, -93, "Summer"],
+  ["19", 40, -91, "Fall"],
+];
+function getColorSeason(d) {
+  return d == 'Winter' ? '#253494' :
+    d == 'Spring' ? "#2c7fb8" :
+    d == 'Summer' ? "#41b6c4" :
+    d == 'Fall' ? "#a1dab4" :
+    "#FFFFFF"; //white
+};
+var SeasonLayerGroup = L.layerGroup([]);
+
+for (var i = 0; i < myPoints.length; i++) {
+  marker = new L.circleMarker([myPoints[i][1], myPoints[i][2]], {
+      radius: myPoints[i][0] / 2 + 5,
+      fillColor: getColorSeason(myPoints[i][3]),
+      color: "#000",
+      weight: 0,
+      opacity: 1,
+      fillOpacity: 0.9
+    })
+    .bindPopup("Category: " + myPoints[i][3]) //note there is no comma here
+    .addTo(SeasonLayerGroup);
+	SeasonLayerGroup.addTo(map);
+};
+var legend1 = L.control({
+  position: 'bottomleft'
+});
+
+legend1.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    season = ['Winter', 'Summer', 'Fall', 'Spring'],
+    labels = [''];
+
+	 div.innerHTML += "<b>Season</b><br>";
+ 
+  for (var i = 0; i < season.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColorSeason(season[i]) + ' "></i> ' +
+      season[i] + (season ? '' + '<br>' : '');
+  }
+
+  return div;
+};
+legend1.addTo(map);
+
+//set color of marker
+function getColor(d) {
+  return d <= '1' ? '#ccebff' :
+    d <= '2' ? "#99d6ff" :
+   d <= '3' ? "#008ae6" :
+    d <= '4' ? "#ffcc99" :
+    d <= '5' ? "#ffa64d" :
+  d <= '6' ? "#e67300" :
+  d <= '7' ? "#994d00" :
+  d <= '8' ? "#ffff99" :
+  d <= '9' ? "#ffff00" :
+    "#FFFFFF"; //white
+}
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.RUCC_2013),
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '2',
+        fillOpacity: 0.7
+    };
+}
+
+
+url = "https://profseeger.github.io/LA558/data/iowaCounties.json";
+
+var geojsonLayer = new L.GeoJSON.AJAX(url , {
+	style: style,
+	onEachFeature: function (feature, layer) {
+        htmlText = "<strong>" + feature.properties.NAME+ "</strong><br>Population 2010: <b>"  + feature.properties.POP2010 + "</b><br>Population 2000: <b>"  + feature.properties.POP2000 + "</b><br> RUCC 2013: <b>"  + feature.properties.RUCC_2013 + "</b>";
+        layer.bindPopup(htmlText);
+		layer.bindTooltip(feature.properties.NAME);
+    }
+}).addTo(map);
+	
+//Create Legend
+var legend = L.control({
+  position: 'bottomright'
+	//Possible values are 'topleft', 'topright', 'bottomleft' or 'bottomright'
+});
+
+legend.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    rucc_13 = [1, 2, 3, 4,5,6,7, 8, 9],
+    labels = ['Metro', ' ', ' ','Non-metro', ' ', ' ', ' ', 'Rural', ' '];
+
+	
+	//console.log(feature.length);
+	
+	 div.innerHTML += "<b>RUCC 2013</b><br>";
+  // loop through items and generate a label with a colored square for each
+  for (var i = 0; i < rucc_13.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColor(rucc_13[i] ) + ' "></i> ' +
+      rucc_13[i] +' '+ labels[i]+'<br>';
+  }
+
+  return div;
+};
+legend.addTo(map);
+
+var overlayMaps = {
+	"Season": SeasonLayerGroup,
+  "RUCC_2013":geojsonLayer,
+};
+
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+map.on('overlayremove', function (eventLayer) {
+	console.log(eventLayer.name  + " off");
+	if (eventLayer.name == "Season") {
+		this.removeControl(legend1);
+	}else if (eventLayer.name == "RUCC_2013"){
+		this.removeControl(legend);
+	}
+});
+
+map.on('overlayadd', function (eventLayer) {
+	console.log(eventLayer.name + " on");
+	if (eventLayer.name == "Season") {
+		 legend1.addTo(this);
+	}else if (eventLayer.name == "RUCC_2013"){
+		 legend.addTo(this);
+	}	
+});
+
+
+</script>
+</body>
+</html>
