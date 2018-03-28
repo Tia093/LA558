@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by Tia093 (http://jsbin.com/raqaqac/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="en">
+
+<head>
+	
+<link rel="stylesheet" href="https://tia093.github.io/LA558/classes/iconref/leaflet.awesome-markers.css">
+  <link rel="stylesheet" href="https://tia093.github.io/LA558/classes/iconref/fa-svg-with-js.css">
+  <link rel="stylesheet" href="https://tia093.github.io/LA558/iconref/fontawesome-all.js">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+<script src="https://tia093.github.io/LA558/classes/iconref/leaflet.awesome-markers.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<style id="jsbin-css">
+#map {
+        width: 600px;
+        height: 400px;
+    }
+
+    
+    button {
+        width: 100px;
+    }
+</style>
+</head>
+
+<body>
+	 <div id="map"></div>
+  <div class="button-group">
+        <button type="button" id="AllMarkers" class="btn btn-success">All places</button>
+        <button type="button" id="marker1" class="btn btn-success">Coffee Shop</button>
+        <button type="button" id="marker2" class="btn btn-success">Cinemark</button>
+		<button type="button" id="marker3" class="btn btn-success">Local Airport</button>
+    </div>
+
+<script id="jsbin-javascript">
+console.clear()
+var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'; 
+var streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr}),
+    grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+     satellite= L.tileLayer(mbUrl,{id:'mapbox.streets-satellite',attribution:mbAttr});
+  var map = L.map('map', {
+		center: [42.02, -93.61],
+		zoom: 12,
+		layers: [streets]
+	});
+	var baseLayers = {
+		"Streets": streets,
+    "Grayscale": grayscale,
+    "Satellite":satellite,
+	};
+L.control.layers(baseLayers).addTo(map);
+var marker1 = L.marker([42.023099, -93.615069], {
+		  icon: L.AwesomeMarkers.icon({
+			icon: 'coffee', 
+			prefix: 'fa', 
+			markerColor: 'brown',
+			iconColor: 'black',
+		}) 
+});
+var marker2 = L.marker([42.011074, -93.613956], {
+		icon: L.AwesomeMarkers.icon({
+			icon: 'star', 
+			prefix: 'glyphicon', 
+			markerColor: 'orange',
+			iconColor: 'yellow'
+		}) 
+});
+var marker3 = L.marker([41.993516, -93.620767], {
+		icon: L.AwesomeMarkers.icon({
+			icon: 'plane', 
+			prefix: 'fa', 
+			markerColor: 'white',
+			iconColor: 'pink'
+		}) 
+});
+var marker4 = L.marker([42.055119, -93.621961], {
+		icon: L.AwesomeMarkers.icon({
+			icon: 'flag', 
+			prefix: 'fa', 
+			markerColor: 'blue',
+			iconColor: 'pink'
+		}) 
+});
+var marker5 = L.marker([42.023344, -93.600935], {
+		icon: L.AwesomeMarkers.icon({
+			icon: 'flag', 
+			prefix: 'fa', 
+			markerColor: 'blue',
+			iconColor: 'pink'
+		}) 
+});
+  var allMarkers = new L.featureGroup([marker1, marker2, marker3, marker4, marker5]);
+allMarkers.addTo(map);
+  marker1.addTo(map);
+  marker2.addTo(map);
+  marker3.addTo(map);
+
+  
+map.fitBounds(allMarkers.getBounds(), {
+   padding: [100, 100]
+});
+  </script>
+  <script>
+  
+ $("#allMarkers").click(function() {
+    //map.addLayer(allRecreation);
+    map.addPoint(marker1);
+    map.addPoint(marker2);
+    map.addPoint(marker3);
+  });
+  $("#marker1").click(function() {
+    map.addPoint(marker1);
+    map.removePoint(marker2);
+    map.removePoint(marker3);
+  });
+
+  $("#marker2").click(function() {
+    map.removePoint(marker1);
+    map.addPoint(marker2);
+    map.removePoint(marker3);
+  });
+
+  $("#marker3").click(function() {
+    map.removePoint(marker1);
+    map.removePoint(marker2);
+    map.addPoint(marker3);
+  });
+});
+  </script>
+
+</body>
+
+</html>
