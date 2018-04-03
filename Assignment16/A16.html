@@ -1,0 +1,113 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by Tia093 (http://jsbin.com/pikixix/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+
+<script	 src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+  
+  <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+   <script src="https://tia093.github.io/LA558/Assignment16/data/realworld.100.js"></script>
+<style id="jsbin-css">
+html, body, #map {
+    height: 600px;
+    margin: 0;
+    padding: 0;
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script id="jsbin-javascript">
+
+var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+maxZoom: 18,
+attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
+}),
+latlng = L.latLng(-37, 175);
+var map = L.map('map', {
+		  center: latlng,
+		  zoom: 2,
+		  layers: [osm]
+});
+
+console.clear();
+var myArray=[];
+var max=2000;
+var min=1;
+// create random points
+
+for (i=0;i<200;i++){
+  x=-37.2297+(Math.random()/100);
+  y=175.01+(Math.random()/100);
+  z=Math.floor(Math.random()*(max-min+1))+min;
+  myArray.push([y,x,z]);
+}
+console.log(myArray);
+
+var heatMap=L.heatLayer(myArray,
+{minOpacity:0.1,
+ maxZoom:10,
+ max:1.0,
+ radius:20,
+ blur:15,                              
+ gradient:{
+   0.2:'yellow',
+   0.65:'blue',
+   1:'red'
+ }  
+    }).addTo(map);
+
+
+var markers = L.markerClusterGroup();
+var singleMarkers = L.layerGroup([]);
+
+for (var i = 0; i < addressPoints .length; i++) {
+var a = addressPoints [i];
+var title = a[2];
+var marker = L.marker(new L.LatLng(a[0],a[1]), {
+		  title: title,
+		  });
+		  marker.bindPopup(title);
+		  markers.addLayer(marker);
+		  singleMarkers.addLayer(marker);
+		}
+map.addLayer(singleMarkers);
+//layer control
+var baseMaps = {
+		  "OpenStreetMap": osm
+		};
+
+var overlayMaps = {
+ "Single markers":singleMarkers,
+ "Cluster": markers,
+ "Heat Map":heatMap,
+};
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+</script>
+</body>
+
+</html>
+
