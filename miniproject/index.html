@@ -1,0 +1,248 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by Tia093 (http://jsbin.com/xihetul/22/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<style id="jsbin-css">
+body {
+ width:100%;
+  height:100%;
+  margin:10;
+  padding:10;
+  background-color: Lightblue;
+}
+
+h1 {
+    color: black;
+    text-align: center;
+    font-family: "Times New Roman";
+    font-size: 30px;
+    background-color: Lightyellow;
+    width: 800px;
+    border-style: solid;
+    border-width: 2px;
+   }
+p {color: black;
+   font-family: "Times New Roman";
+   font-size: 15px;
+   background-color: Lightyellow;
+   border-style: solid;
+   border-width: 2px;
+    }
+
+#map { height: 400px;width:800px;margin: 0; padding: 0; } 
+#button {
+        width: 150px;
+   }
+</style>
+<html>
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.mis.js"></script>
+<link rel="stylesheet" href="https://tia093.github.io/LA558/classes/iconref/leaflet.awesome-markers.css">
+  <link rel="stylesheet" href="https://tia093.github.io/LA558/classes/iconref/fa-svg-with-js.css">
+  <link rel="stylesheet" href="https://tia093.github.io/LA558/iconref/fontawesome-all.js">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+<script src="https://tia093.github.io/LA558/classes/iconref/leaflet.awesome-markers.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> 
+
+
+<body>
+<center>
+ <h1>
+<b>Iowa Safety Improvement Candiate Locations</b> </h1>
+     <p>
+The Iowa DOT's Office of Traffic and Safety has updated a list of the top 1000 intersection safety improvement candidate locations (SICL) in Iowa and this is composite rank about Top 200 intersection safety improvement candidate locations in Iowa . This list is supplemental to Iowa DOT's primary focus, Iowa's 5 Percent Safety Report. To develop this list, all crashes in Iowa are used to determine an initial cut of intersections that meet the criteria of at least one crash. The intersections identified are then ranked according to the number of crashes, the severity of the crashes, and the rate at which crashes occur. The Iowa DOT utilizes crash reports filed by city police departments, county sheriffs, the Iowa State Patrol and individual drivers in determining the listings. The locations identified are eligible for funding assistance to develop safety improvements under the Iowa Traffic Safety Fund Program. Grant applications for funding are competitive and subject to comparison with the 5 percent severe safety needs list. The Iowa DOT will select proposals that provide the greatest safety return on the dollars invested.  </p>    
+  <div id="map"></div>
+<div class="btn-group">
+        <button type="button" id="SLCL" class="btn btn-success">All Top 200</button>
+        <button type="button" id="Top20" class="btn btn-success">Top 20</button>
+        <button type="button" id="Top2050" class="btn btn-success">Rank 20-50</button>
+		<button type="button" id="below100" class="btn btn-success">Rank after 100</button>
+    </div>
+
+  
+  
+  
+<script id="jsbin-javascript">
+console.clear();
+var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'; 
+var streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr}),
+    grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+     satellite= L.tileLayer(mbUrl,{id:'mapbox.streets-satellite',attribution:mbAttr});
+  var map = L.map('map', {
+		center: [42, -93],
+		zoom: 6,
+		layers: [streets]
+	});
+	var baseLayers = {
+		"Streets": streets,
+    "Grayscale": grayscale,
+    "Satellite":satellite,
+	};
+L.control.layers(baseLayers).addTo(map);
+
+///L.geoJson(Intersections).addTo(map);
+function addPopups(feature, layer) {
+  layer.bindPopup("Rank No. " + feature.properties.COMPRANK +
+    "<BR> Location:" + feature.properties.LITERAL);
+}
+ var geojsonMarkerOptions =L.AwesomeMarkers.icon({
+			icon: 'star', 
+			prefix: 'glyphicon', 
+			markerColor: 'yellow',
+			iconColor: 'yellow'
+		});
+var Top20Icon =L.AwesomeMarkers.icon({
+			icon: 'star', 
+			prefix: 'glyphicon', 
+			markerColor: 'blue',
+			iconColor: 'blue'
+		});
+var Top2050Icon =L.AwesomeMarkers.icon({
+			icon: 'star', 
+			prefix: 'glyphicon', 
+			markerColor: 'orange',
+			iconColor: 'orange'
+		});
+var below100Icon =L.AwesomeMarkers.icon({
+			icon: 'star', 
+			prefix: 'glyphicon', 
+			markerColor: 'green',
+			iconColor: 'green'
+		});
+
+//var SLCL = new L.geoJson(Intersections, {
+//onEachFeature: addPopups,
+//pointToLayer: function(feature, latlng) {
+//return L.marker(latlng,{
+//icon:geojsonMarkerOptions
+//});
+//}
+//}).addTo(map);
+
+//map.fitBounds(SLCL.getBounds(), {
+  //padding: [5, 5]
+//});
+
+
+var promise = $.getJSON("https://tia093.github.io/LA558/miniproject/data/Intersections.geojson");
+promise.then(function(data) {
+  var SLCL = L.geoJson(data, {
+    filter: function(feature, layer) {
+      return feature.properties.COMPRANK;
+    },
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon: geojsonMarkerOptions
+      }).on('mouseover', function() {
+        this.bindPopup(feature.properties.COMPRANK).openPopup();
+      });
+    }
+  });
+
+  var Top20 = L.geoJson(data, {
+    filter: function(feature, layer) {
+      return feature.properties.COMPRANK <= "20";
+    },
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon: Top20Icon
+      }).on('mouseover', function() {
+        this.bindPopup(feature.properties.COMPRANK).openPopup();
+      });
+    }
+  });
+
+  var Top2050 = L.geoJson(data, {
+    filter: function(feature, layer) {
+      return feature.properties.COMPRANK >="20" <="50";
+    },
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon:Top2050Icon
+      }).on('mouseover', function() {
+        this.bindPopup(feature.properties.COMPRANK).openPopup();
+      });
+    }
+  });
+
+
+  var below100 = L.geoJson(data, {
+    filter: function(feature, layer) {
+      return feature.properties.COMPRANK >= "100";
+    },
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon: below100Icon
+      }).on('mouseover', function() {
+        this.bindPopup(feature.properties.COMPRANK).openPopup();
+      });
+    }
+  });
+  //Top2050.addTo(map);
+  //Top20.addTo(map);
+ // below100.addTo(map);
+  $("#SLCL").click(function() {
+  
+    map.addLayer(SLCL);
+   
+  });
+  $("#Top20").click(function() {
+    map.addLayer(Top20);
+    map.removeLayer(SLCL);
+  });
+
+  $("#Top2050").click(function() {
+    map.removeLayer(Top20);
+    map.addLayer(Top2050 );
+   
+  });
+
+  $("#below100").click(function() {
+  
+    map.removeLayer(Top2050);
+    map.addLayer(below100);
+  });
+});
+
+map.fitBounds(SLCL.getBounds(), {
+  padding: [5, 5]
+});
+
+var legend=L.control({
+  position:'bottomright'
+});
+legend.onAdd=
+  function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+   SLCL_Rank = ['All 200','Top20', 'Top 20_50', 'Below 100'],
+    labels = [''];
+
+  // loop through items and generate a label with a colored square for each
+  for (var i = 0; i <SLCL_Rank .length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColor(SLCL_Rank[i]) + ' "></i> ' +
+      SLCL_Rank[i] + (SLCL_Rank ? '' + '<br>' : '');
+  }
+
+  return div;
+};
+
+legend.addTo(map);
+
+</script>
+</body>
+
+</html>
