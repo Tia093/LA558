@@ -60,25 +60,7 @@ Released under the MIT license: http://jsbin.mit-license.org
      margin-right: 10px;
 	   margin-left: 10px;
      margin-bottom: 10px;
-}
-
-#container{
-	width: 850px;
-  height:650px;
-	margin-right: 2px;
-	margin-left: 2px;
-  background-color: gray ;
-  border-color:sienna;
-  border-style: dotted;
-  border-width: 1px; }
-
-#header {
-	clear: both;
-	padding: 20px;
-	background-color: snow;
-	color: sienna;
-
-}
+	}
 
 
 </style>
@@ -160,7 +142,7 @@ function addMarker(e) {
   }
 
 
-}
+};
 
 
 
@@ -246,7 +228,7 @@ function getIcon(d) {
     d == 'golf' ? golfIcon :
     d == 'red' ? redIcon :
     greenIcon;
-}
+};
 
 var geojsonLayer2b = new L.GeoJSON.AJAX(responseURL, {
   pointToLayer: function(feature, latlng) {
@@ -285,7 +267,7 @@ var overlayMaps = {
   "Loaded with plugin": geojsonLayer2,
   "Loaded with plugin & icons": geojsonLayer2b,
   "Iowa Border":IowaBo,
-  "Iowa Bird Conservation Area":birdconserve,
+  "Iowa Bird Conservation Area":birdconserve
   
 };
 
